@@ -1,0 +1,8 @@
+"Visualize the state space tree for N=4 queens, marking invalid branches in red."
+
+---
+Refinement used with the prompt above (added after the official prompt; the official wording is unchanged):
+
+Draw the complete backtracking state-space tree for the N=4 queens problem. The root is "Start" (empty board); each level is one row (Row 1 to Row 4); each node is one attempt to place a queen in a column (c1 to c4) of that row. Mark every invalid branch (a placement that shares a column or diagonal with an already placed queen) in red and label the reason ("col" or "diag"). Show the valid branches in a neutral colour, and highlight the paths that lead to the two solutions, (2, 4, 1, 3) and (3, 1, 4, 2), in green, so that the recursive exploration and the backtracking are clearly visible.
+
+AI tool: Claude Code (Anthropic). The prompt was given to the AI assistant, which produced the visualization from the real N=4 backtracking algorithm (Project10_NQueens.java and Visualizer/script.js) instead of drawing a hand-made, unverified picture. Visualization.png is a render of Visualizer/index.html#full.

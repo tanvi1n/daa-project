@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>N-Queens Backtracking Visualizer (N = 4)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="eyebrow">DAA Macro Project 10 · Unit 4 Backtracking</p>
+      <h1>N-Queens <span>Backtracking State Space Visualizer</span></h1>
+    </div>
+    <div class="n-badge">N = 4</div>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: chessboard, status, controls -->
+    <section class="card board-card">
+      <h2>Chessboard</h2>
+      <svg id="board" viewBox="0 0 360 360" role="img" aria-label="4 by 4 chessboard"></svg>
+
+      <div class="controls">
+        <button id="btn-start" class="primary">▶ Start</button>
+        <button id="btn-pause">⏸ Pause</button>
+        <button id="btn-next">⏭ Next Step</button>
+        <button id="btn-reset">↻ Reset</button>
+      </div>
+      <label class="speed">Speed
+        <input id="speed" type="range" min="1" max="5" value="3">
+      </label>
+
+      <div id="banner" class="banner idle">READY</div>
+      <dl class="status">
+        <dt>Current row</dt><dd id="s-row">–</dd>
+        <dt>Trying column</dt><dd id="s-col">–</dd>
+        <dt>Action</dt><dd id="s-action">–</dd>
+        <dt>Reason</dt><dd id="s-reason">–</dd>
+        <dt>Queens placed</dt><dd id="s-queens">none</dd>
+      </dl>
+      <p id="message" class="message">Press Start to run the backtracking search.</p>
+
+      <div class="counters">
+        <span>Step <b id="c-step">0</b>/<b id="c-total">0</b></span>
+        <span>Nodes <b id="c-nodes">0</b></span>
+        <span class="red">Invalid <b id="c-invalid">0</b></span>
+        <span class="green">Solutions <b id="c-sol">0</b></span>
+      </div>
+    </section>
+
+    <!-- RIGHT: state-space tree -->
+    <section class="card tree-card">
+      <div class="tree-head">
+        <h2>N = 4 State-Space Tree <small>(level = row, node = one queen placement attempt)</small></h2>
+        <ul class="legend">
+          <li><i class="k trying"></i>being tried</li>
+          <li><i class="k placed"></i>valid, on current path</li>
+          <li><i class="k invalid"></i>invalid (pruned)</li>
+          <li><i class="k done"></i>valid, backtracked</li>
+          <li><i class="k solution"></i>on a solution path</li>
+        </ul>
+      </div>
+      <div class="tree-wrap">
+        <div class="levels" id="levels"></div>
+        <div class="tree-scroll" id="treeScroll"><svg id="tree"></svg></div>
+      </div>
+      <p class="tag-note">Node label <b>cN</b> = queen tried in column N of that level's row. Under red nodes: <b>col</b> = column conflict, <b>diag</b> = diagonal conflict.</p>
+      <div id="solutions" class="solutions"></div>
+    </section>
+  </main>
+
+  <section class="lower">
+    <div class="card">
+      <h2>Algorithm (pseudocode)</h2>
+      <pre class="pseudo" id="pseudo"><span data-k="head">procedure Solve(row):                         // N = 4</span>
+<span data-k="solution">    if row &gt; N:  record solution; return</span>
+<span data-k="for">    for col ← 1 to N:</span>
+<span data-k="check">        if IsSafe(row, col):</span>
+<span data-k="place">            place queen at (row, col)</span>
+<span data-k="recurse">            Solve(row + 1)                    // recurse</span>
+<span data-k="remove">            remove queen from (row, col)      // BACKTRACK</span>
+<span data-k="prune">        else:  prune branch  (invalid, red)</span>
+
+<span>function IsSafe(row, col):</span>
+<span>    for r ← 1 to row − 1:</span>
+<span>        c ← column of the queen in row r</span>
+<span>        if c = col or |c − col| = row − r:  return false</span>
+<span>    return true</span>
+
+<span>Solve(1)                                      // start</span></pre>
+    </div>
+    <div class="card explain">
+      <h2>How to read the visualization</h2>
+      <ul>
+        <li><b>Level = row.</b> Each level of the tree is one recursive call <code>Solve(row)</code>, which places exactly one queen in that row.</li>
+        <li><b>Branch = choice.</b> Every node is one attempt to put a queen in a column of that row; its parent is the partial placement it extends.</li>
+        <li><b>Red = invalid.</b> If the square shares a column or diagonal with a queen already placed, the branch is pruned immediately (shown red, with the reason) and nothing below it is explored.</li>
+        <li><b>Backtracking.</b> When every column of the next row has been tried, the call returns and the queen is removed (the board updates), then the next column of the previous row is tried.</li>
+        <li><b>Green = solution.</b> Placing the 4th queen safely means all 4 queens are safe. N = 4 has exactly 2 solutions; the search continues until the whole tree is explored.</li>
+      </ul>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
