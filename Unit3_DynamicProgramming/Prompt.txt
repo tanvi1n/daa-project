@@ -1,0 +1,95 @@
+================================================================================
+  DAA PROJECT 8 – ALL-PAIRS SHORTEST PATH MATRIX UPDATE
+  PROMPT FILE
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+ORIGINAL FACULTY PROMPT
+────────────────────────────────────────────────────────────────────────────────
+
+"Show iterative updates of distance matrix in Floyd-Warshall algorithm."
+
+Expected Outcome: Stepwise matrix visualization.
+
+────────────────────────────────────────────────────────────────────────────────
+DETAILED AI VISUALIZATION PROMPT
+────────────────────────────────────────────────────────────────────────────────
+
+Build an interactive, step-by-step visualization of the Floyd-Warshall
+all-pairs shortest path algorithm using a weighted directed graph with
+4 vertices: A, B, C, D.
+
+The visualization should include the following stages:
+
+  STAGE 0 – Initial Matrix
+  ─────────────────────────
+  Display the initial distance matrix loaded directly from the graph's
+  edge weights. Cells with no direct edge should show ∞ (infinity).
+  Diagonal cells (D[i][i]) are always 0.
+
+        A   B   C   D
+    A   0   3   ∞   7
+    B   8   0   2   ∞
+    C   5   ∞   0   1
+    D   2   ∞   ∞   0
+
+  STAGE 1 – Intermediate Vertex k = A
+  ─────────────────────────────────────
+  For every pair (i, j), check if routing through A is shorter.
+  Apply: D[i][j] = min(D[i][j], D[i][A] + D[A][j])
+  Cells that change: D[B][D], D[C][B], D[D][B]
+  Highlight changed cells in a distinct color.
+
+  STAGE 2 – Intermediate Vertex k = B
+  ─────────────────────────────────────
+  Apply: D[i][j] = min(D[i][j], D[i][B] + D[B][j])
+  Cells that change: D[A][C], D[D][C]
+  Highlight changed cells.
+
+  STAGE 3 – Intermediate Vertex k = C
+  ─────────────────────────────────────
+  Apply: D[i][j] = min(D[i][j], D[i][C] + D[C][j])
+  Cells that change: D[A][D], D[B][A], D[B][D]
+  Highlight changed cells.
+
+  STAGE 4 – Intermediate Vertex k = D
+  ─────────────────────────────────────
+  Apply: D[i][j] = min(D[i][j], D[i][D] + D[D][j])
+  Cells that change: D[B][A], D[C][A], D[C][B]
+  Highlight changed cells.
+
+  FINAL STAGE – Shortest Path Matrix
+  ────────────────────────────────────
+  Display the final shortest-path matrix side-by-side with the initial
+  matrix, clearly showing how the algorithm improved all-pairs distances.
+
+        A   B   C   D
+    A   0   3   5   6
+    B   5   0   2   3
+    C   3   6   0   1
+    D   2   5   7   0
+
+────────────────────────────────────────────────────────────────────────────────
+CORE FORMULA TO DISPLAY
+────────────────────────────────────────────────────────────────────────────────
+
+  D[i][j] = min( D[i][j], D[i][k] + D[k][j] )
+
+────────────────────────────────────────────────────────────────────────────────
+UI / INTERACTION REQUIREMENTS
+────────────────────────────────────────────────────────────────────────────────
+
+  - Show iteration title: "Iteration N: Using X as Intermediate Vertex"
+  - Display the distance matrix as a proper styled table
+  - Highlight cells that changed in the current iteration (yellow)
+  - Show previous value → new value for each changed cell
+  - Provide Previous / Next navigation buttons
+  - Provide a Reset button (returns to initial state)
+  - Provide an Auto Run button (steps through all iterations automatically)
+  - Show a progress bar indicating current position in the algorithm
+  - Include an explanation panel for what changed and why
+  - Show the Floyd-Warshall formula prominently
+  - Use ∞ symbol for unreachable paths
+  - Keep the interface clean and suitable for a classroom/PPT presentation
+
+================================================================================
