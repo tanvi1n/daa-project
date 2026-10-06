@@ -1,0 +1,86 @@
+================================================================
+  SAMPLE OUTPUT
+  Project 13 – 0/1 Knapsack using Branch and Bound
+  DAA Macro Project — Unit V: Branch and Bound
+================================================================
+
+Command: python3 Project13_Knapsack_BnB.py
+
+----------------------------------------------------------------
+
+==============================================================
+   0/1 KNAPSACK — BRANCH AND BOUND
+==============================================================
+
+  Knapsack Capacity : 8
+
+  Item         Weight   Profit    P/W Ratio
+  ------------------------------------------
+  Item1             2       40        20.00
+  Item2             3       50        16.67
+  Item3             4       65        16.25
+  Item4             5       70        14.00
+
+--------------------------------------------------------------
+   Node   Lvl      W       P     Bound  Action
+--------------------------------------------------------------
+      1     0      2      40    138.75  Incl Item1      → EXPAND
+      2     0      0       0    129.00  Excl Item1      → EXPAND
+      3     1      5      90    138.75  Incl Item2      → EXPAND
+      4     1      2      40    133.00  Excl Item2      → EXPAND
+      5     1      3      50    129.00  Incl Item2      → EXPAND
+      6     1      0       0    121.00  Excl Item2      → EXPAND
+      7     2      9     155      0.00  Incl Item3      → PRUNED (weight > capacity)
+      8     2      5      90    132.00  Excl Item3      → EXPAND
+      9     2      6     105    133.00  Incl Item3      → EXPAND
+     10     2      2      40    110.00  Excl Item3      → EXPAND
+     11     2      7     115    129.00  Incl Item3      → EXPAND
+     12     2      3      50    120.00  Excl Item3      → EXPAND
+     13     2      4      65    121.00  Incl Item3      → EXPAND
+     14     2      0       0     70.00  Excl Item3      → PRUNED (bound ≤ best)
+     15     3     10     160      0.00  Incl Item4      → PRUNED (weight > capacity)
+     16     3      5      90     90.00  Excl Item4      → PRUNED (bound ≤ best)
+     17     3     11     175      0.00  Incl Item4      → PRUNED (weight > capacity)
+     18     3      6     105    105.00  Excl Item4      → PRUNED (bound ≤ best)
+     --     2      2      40    110.00  PRUNED (bound ≤ best)
+     19     3     12     185      0.00  Incl Item4      → PRUNED (weight > capacity)
+     20     3      7     115    115.00  Excl Item4      → PRUNED (bound ≤ best)
+     21     3      8     120      0.00  Incl Item4      → PRUNED (bound ≤ best)
+     22     3      3      50     50.00  Excl Item4      → PRUNED (bound ≤ best)
+     23     3      9     135      0.00  Incl Item4      → PRUNED (weight > capacity)
+     24     3      4      65     65.00  Excl Item4      → PRUNED (bound ≤ best)
+--------------------------------------------------------------
+
+  ╔══════════════════════════════════════╗
+  ║  Optimal Profit  : 120               ║
+  ║  Selected Items  : Item2, Item4      ║
+  ║  Total Weight    : 8                 ║
+  ║  Capacity Used   : 8/8               ║
+  ╚══════════════════════════════════════╝
+
+================================================================
+  OUTPUT ANALYSIS
+================================================================
+
+Nodes explored  : 24 (out of a possible 2^4 = 16 subsets)
+  Note: BFS generates include+exclude children per node, so node
+  count > 16. Several are pruned immediately after generation.
+
+Pruning summary:
+  - Pruned by weight > capacity : Nodes 7, 15, 17, 19, 23
+  - Pruned by bound ≤ best      : Nodes 14, 16, 18, 20, 21, 22, 24
+    and Node-10's subtree (pruned before generating children)
+
+Best profit updates during execution:
+  - After Node 1  (Include Item1)      : best = 40
+  - After Node 3  (Include Item2)      : best = 90
+  - After Node 9  (Include Item3 path) : best = 105
+  - After Node 11 (Include Item3 path) : best = 115
+  - After Node 21 (Include Item4 path) : best = 120  ← FINAL
+
+Final answer:
+  Optimal Profit = 120
+  Selected Items = Item2 (w=3, p=50) + Item4 (w=5, p=70)
+  Total Weight   = 8 (knapsack completely filled)
+
+================================================================

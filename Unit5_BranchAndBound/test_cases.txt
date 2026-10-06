@@ -1,0 +1,189 @@
+================================================================
+  TEST CASES
+  Project 13 – 0/1 Knapsack using Branch and Bound
+  DAA Macro Project — Unit V: Branch and Bound
+================================================================
+
+All bounds calculated using fractional knapsack on items sorted
+by P/W ratio (descending).
+
+================================================================
+TEST CASE 1 — Standard Case (Project Example)
+================================================================
+
+Input:
+  n        = 4
+  Capacity = 8
+  Items:
+    Item1: weight=2, profit=40
+    Item2: weight=3, profit=50
+    Item3: weight=4, profit=65
+    Item4: weight=5, profit=70
+
+Expected Output:
+  Optimal Profit = 120
+  Selected Items = {Item2, Item4}
+  Total Weight   = 8
+
+Explanation:
+  Item2 (P/W=16.67) + Item4 (P/W=14.0) = profit 120, weight 8.
+  This is better than taking Item1+Item3 (profit=105) or
+  Item1+Item4 (profit=110). The fractional knapsack bound correctly
+  guides the search to find the non-intuitive optimal.
+
+================================================================
+TEST CASE 2 — Small Capacity (Most Items Excluded)
+================================================================
+
+Input:
+  n        = 4
+  Capacity = 3
+  Items:
+    Item1: weight=2, profit=40
+    Item2: weight=3, profit=50
+    Item3: weight=4, profit=65
+    Item4: weight=5, profit=70
+
+Expected Output:
+  Optimal Profit = 50
+  Selected Items = {Item2}
+  Total Weight   = 3
+
+Explanation:
+  Capacity 3 means only one item can fit.
+  Item2 (w=3, p=50) gives more profit than Item1 (w=2, p=40).
+  Item3 and Item4 both exceed capacity.
+  Many branches pruned immediately due to weight violations.
+
+================================================================
+TEST CASE 3 — Large Capacity (All Items Fit)
+================================================================
+
+Input:
+  n        = 4
+  Capacity = 20
+  Items:
+    Item1: weight=2, profit=40
+    Item2: weight=3, profit=50
+    Item3: weight=4, profit=65
+    Item4: weight=5, profit=70
+
+Expected Output:
+  Optimal Profit = 225
+  Selected Items = {Item1, Item2, Item3, Item4}
+  Total Weight   = 14
+
+Explanation:
+  Total weight of all items = 2+3+4+5 = 14 ≤ 20.
+  Taking all items is always optimal when capacity is not the constraint.
+  Algorithm quickly confirms this as no item combination can be better.
+
+================================================================
+TEST CASE 4 — Single Item
+================================================================
+
+Input:
+  n        = 1
+  Capacity = 5
+  Items:
+    Item1: weight=3, profit=60
+
+Expected Output:
+  Optimal Profit = 60
+  Selected Items = {Item1}
+  Total Weight   = 3
+
+Explanation:
+  Only one item. It fits (3 ≤ 5). It is always included.
+  The tree has only two nodes: include (optimal) and exclude (P=0).
+
+================================================================
+TEST CASE 5 — Equal P/W Ratios
+================================================================
+
+Input:
+  n        = 3
+  Capacity = 10
+  Items:
+    Item1: weight=2, profit=6   (P/W = 3.0)
+    Item2: weight=4, profit=12  (P/W = 3.0)
+    Item3: weight=6, profit=18  (P/W = 3.0)
+
+Expected Output:
+  Optimal Profit = 36
+  Selected Items = {Item1, Item2, Item3}
+  Total Weight   = 12
+
+  Wait — total weight = 2+4+6 = 12 > 10, so not all fit.
+  Best feasible subset:
+    {Item2, Item3}  → P=30, W=10
+    {Item1, Item3}  → P=24, W=8
+    {Item1, Item2}  → P=18, W=6
+    {Item3}         → P=18, W=6
+  Correct answer: P=30, Items={Item2, Item3}, W=10
+
+Expected Output (corrected):
+  Optimal Profit = 30
+  Selected Items = {Item2, Item3}
+  Total Weight   = 10
+
+Explanation:
+  All items have the same P/W ratio, so the bound is tightest and
+  the ordering between items doesn't affect correctness — only the
+  largest items by weight that together stay within capacity win.
+  The algorithm still finds the correct answer despite equal ratios.
+
+================================================================
+TEST CASE 6 — Significant Pruning (Large Spread in Ratios)
+================================================================
+
+Input:
+  n        = 5
+  Capacity = 10
+  Items:
+    Item1: weight=1, profit=10  (P/W = 10.0)
+    Item2: weight=3, profit=20  (P/W = 6.67)
+    Item3: weight=5, profit=30  (P/W = 6.0)
+    Item4: weight=7, profit=35  (P/W = 5.0)
+    Item5: weight=9, profit=40  (P/W = 4.44)
+
+Expected Output:
+  Optimal Profit = 60
+  Selected Items = {Item1, Item2, Item3}
+  Total Weight   = 9
+
+Explanation:
+  Item1 (w=1) + Item2 (w=3) + Item3 (w=5) = weight 9, profit 60.
+  Item4 and Item5 are heavy with low ratios — their subtrees get
+  pruned early because taking them leaves little room for profitable
+  lighter items. Significant pruning occurs in branches that include
+  Item4 or Item5 early in the tree.
+
+  Verify manually:
+    {I1,I2,I3}  → P=60, W=9   ← OPTIMAL
+    {I1,I2,I4}  → P=65, W=11  ← infeasible
+    {I1,I3,I4}  → P=75, W=13  ← infeasible
+    {I1,I2}     → P=30, W=4
+    {I1,I3}     → P=40, W=6
+    {I2,I3}     → P=50, W=8
+    {I1,I2,I3}  → P=60, W=9   ← best feasible
+
+================================================================
+  HOW TO RUN TEST CASES
+================================================================
+
+Modify the bottom section of Project13_Knapsack_BnB.py:
+
+Example for Test Case 2:
+    weights    = [2, 3, 4, 5]
+    profits    = [40, 50, 65, 70]
+    item_names = ["Item1", "Item2", "Item3", "Item4"]
+    capacity   = 3   # ← change this
+    knapsack_branch_and_bound(capacity, weights, profits, item_names)
+
+Example for Test Case 3:
+    capacity   = 20  # ← change this
+
+Or call the function directly with any custom dataset.
+
+================================================================

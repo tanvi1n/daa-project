@@ -1,0 +1,148 @@
+================================================================
+  AI VISUALIZATION PROMPT
+  Project 13 – 0/1 Knapsack Branch and Bound Search Tree
+  DAA Macro Project — Unit V: Branch and Bound
+================================================================
+
+EXACT PROMPT TO USE IN ChatGPT / DALL-E / Canva AI / Midjourney:
+-----------------------------------------------------------------
+
+Create a clean, academic-style visualization of a Branch-and-Bound
+search tree for the 0/1 Knapsack problem. The diagram must be
+technically accurate, readable, and suitable for a university
+Design and Analysis of Algorithms (DAA) submission.
+
+─── INPUT DATA ───────────────────────────────────────────────────
+
+Items (sorted by Profit/Weight ratio, descending):
+  Item1: weight=2, profit=40, P/W ratio=20.00
+  Item2: weight=3, profit=50, P/W ratio=16.67
+  Item3: weight=4, profit=65, P/W ratio=16.25
+  Item4: weight=5, profit=70, P/W ratio=14.00
+
+Knapsack Capacity W = 8
+
+─── TREE STRUCTURE ───────────────────────────────────────────────
+
+The tree has 5 levels (Root + 4 item levels).
+Each node shows: Decision | P=profit | W=weight | Bound=upper bound
+
+LEVEL 0 — ROOT:
+  ┌─────────────────────────┐
+  │        ROOT             │
+  │   P = 0  W = 0          │
+  │   Bound = 138.75        │
+  └─────────────────────────┘
+
+LEVEL 1 — Decide Item1:
+  Left child  (Include Item1):  P=40,  W=2,  Bound=138.75  → EXPAND
+  Right child (Exclude Item1):  P=0,   W=0,  Bound=129.00  → EXPAND
+
+LEVEL 2 — Decide Item2:
+  From Include-Item1:
+    Left  (Include Item2):  P=90,  W=5,  Bound=138.75  → EXPAND
+    Right (Exclude Item2):  P=40,  W=2,  Bound=133.00  → EXPAND
+  From Exclude-Item1:
+    Left  (Include Item2):  P=50,  W=3,  Bound=129.00  → EXPAND
+    Right (Exclude Item2):  P=0,   W=0,  Bound=121.00  → EXPAND
+
+LEVEL 3 — Decide Item3:
+  From (Incl-I1, Incl-I2):
+    Left  (Include Item3):  P=155, W=9,  Bound=0.00    → PRUNED ✗ (W > capacity)
+    Right (Exclude Item3):  P=90,  W=5,  Bound=132.00  → EXPAND
+  From (Incl-I1, Excl-I2):
+    Left  (Include Item3):  P=105, W=6,  Bound=133.00  → EXPAND
+    Right (Exclude Item3):  P=40,  W=2,  Bound=110.00  → EXPAND
+  From (Excl-I1, Incl-I2):
+    Left  (Include Item3):  P=115, W=7,  Bound=129.00  → EXPAND
+    Right (Exclude Item3):  P=50,  W=3,  Bound=120.00  → EXPAND
+  From (Excl-I1, Excl-I2):
+    Left  (Include Item3):  P=65,  W=4,  Bound=121.00  → EXPAND
+    Right (Exclude Item3):  P=0,   W=0,  Bound=70.00   → PRUNED ✗ (Bound ≤ best=115)
+
+LEVEL 4 — Decide Item4:
+  From (I1+I2, No-I3):
+    Left  (Include Item4):  P=160, W=10, Bound=0.00    → PRUNED ✗ (W > capacity)
+    Right (Exclude Item4):  P=90,  W=5,  Bound=90.00   → PRUNED ✗ (Bound ≤ best)
+  From (I1, No-I2, I3):
+    Left  (Include Item4):  P=175, W=11, Bound=0.00    → PRUNED ✗ (W > capacity)
+    Right (Exclude Item4):  P=105, W=6,  Bound=105.00  → PRUNED ✗ (Bound ≤ best)
+  From (No-I1, I2+I3):
+    Left  (Include Item4):  P=185, W=12, Bound=0.00    → PRUNED ✗ (W > capacity)
+    Right (Exclude Item4):  P=115, W=7,  Bound=115.00  → PRUNED ✗ (Bound ≤ best)
+  From (No-I1, I2, No-I3):
+    Left  (Include Item4):  P=120, W=8,  Bound=120.00  → ★ OPTIMAL SOLUTION ★
+    Right (Exclude Item4):  P=50,  W=3,  Bound=50.00   → PRUNED ✗ (Bound ≤ best)
+  From (No-I1, No-I2, I3):
+    Left  (Include Item4):  P=135, W=9,  Bound=0.00    → PRUNED ✗ (W > capacity)
+    Right (Exclude Item4):  P=65,  W=4,  Bound=65.00   → PRUNED ✗ (Bound ≤ best)
+
+─── OPTIMAL SOLUTION ─────────────────────────────────────────────
+
+  ★ Optimal Profit = 120
+  ★ Selected Items = Item2 (w=3, p=50) + Item4 (w=5, p=70)
+  ★ Total Weight   = 8 / 8 (capacity fully used)
+
+─── DIAGRAM STYLE REQUIREMENTS ──────────────────────────────────
+
+Layout:
+  - Top-down tree layout, root at top centre.
+  - Left branch = Include item, Right branch = Exclude item.
+  - Levels labelled on the left: Level 0 (Root), Level 1 (Item1), etc.
+  - Arrows between parent and child nodes, labelled "Include" and "Exclude".
+  - Clean, symmetric layout with no overlapping labels.
+
+Node boxes:
+  - Rounded rectangles for each node.
+  - Inside each box: Decision label, P=..., W=..., Bound=...
+  - Each box is clearly readable (min font size 10pt equivalent).
+
+Colour coding (mandatory):
+  - WHITE or LIGHT BLUE   : Root node
+  - GREEN                 : Expanded (explored) nodes
+  - RED with ✗ or CROSS   : Pruned because weight > capacity
+  - ORANGE with ✗ or CROSS: Pruned because bound ≤ best profit
+  - GOLD / YELLOW STAR    : Optimal solution node (P=120, W=8)
+  - BOLD PATH             : The path from root to optimal solution
+
+Labels on pruned nodes must clearly state reason:
+  - "PRUNED: W > 8"         for infeasible nodes
+  - "PRUNED: Bound ≤ Best"  for non-promising nodes
+
+Additional annotations:
+  - Mark "Best = 40", "Best = 90", "Best = 105", "Best = 115", "Best = 120"
+    at the point in the tree where each new best is found.
+  - Show the legend in a corner of the diagram.
+
+Legend box (include in diagram):
+  ■ Green  = Explored node
+  ■ Red    = Pruned (weight exceeded)
+  ■ Orange = Pruned (bound ≤ best)
+  ★ Gold   = Optimal solution
+
+Title at top of diagram:
+  "0/1 Knapsack — Branch and Bound Search Tree"
+  "Capacity = 8 | Optimal Profit = 120 | Items: Item2 + Item4"
+
+Overall aesthetic:
+  - White background, academic/professional style.
+  - No clip art, no decorations, no gradients.
+  - Consistent font throughout (sans-serif recommended).
+  - Suitable for printing in black-and-white (use patterns if needed).
+
+================================================================
+  NOTE FOR THE STUDENT
+================================================================
+
+Use this prompt in:
+  1. ChatGPT-4o (image generation) — paste the full prompt above.
+  2. DALL-E 3 via ChatGPT — works well for tree diagrams.
+  3. Canva AI / Magic Write — use for a simpler stylised version.
+  4. draw.io / Lucidchart — manually recreate using the exact values.
+  5. Graphviz — use DOT language with the node/edge data above.
+
+For the most accurate result, use draw.io or Graphviz to create
+the diagram manually based on the exact values provided, then
+include the resulting image as Visualization.png in the project folder.
+
+================================================================
