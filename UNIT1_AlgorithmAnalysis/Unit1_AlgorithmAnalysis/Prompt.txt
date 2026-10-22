@@ -1,0 +1,6 @@
+DAA VISUALIZATION PROMPT — GROUP 11, UNIT I, TOPIC 2
+
+Create a clear, academically styled recursion-tree diagram for Merge Sort applied to the eight-element array:
+[38, 27, 43, 3, 9, 82, 10, 1].
+
+Show the recursive divide stage from the full array to single-element arrays. Then show the merge stage level by level, with each merged sorted subarray clearly labeled. The final result must be [1, 3, 9, 10, 27, 38, 43, 82]. Use arrows to show parent-child recursive calls, distinguish the divide and merge stages, and include a short note that Merge Sort has Θ(n log n) time complexity and Θ(n) auxiliary space. Ensure all labels are readable and no branches or values are omitted.
